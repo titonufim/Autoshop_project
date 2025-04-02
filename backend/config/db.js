@@ -1,4 +1,6 @@
-const { Sequelize } = require("sequelize");
+// конфигурация подключения к БД
+const { Sequelize } = require("sequelize"); // импорт, со взятием конкретного класса Sequelize (Деструктуризация)
+
 const config = require("../config/config.json")[process.env.NODE_ENV || "development"];
 
 const sequelize = new Sequelize(

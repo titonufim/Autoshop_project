@@ -8,11 +8,7 @@ const Product = sequelize.define("Product", {
   description: { type: DataTypes.TEXT },
   price: { type: DataTypes.FLOAT, allowNull: false },
   stock: { type: DataTypes.INTEGER, allowNull: false },
-  category_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { model: Category, key: "category_id" },
-  },
+  category_id: { type: DataTypes.INTEGER, allowNull: false, references: { model: Category, key: "category_id" } },
 });
 
 Product.belongsTo(Category, { foreignKey: "category_id" });
