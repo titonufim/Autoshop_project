@@ -14,4 +14,4 @@ router.use("/user", userRouter);
 // router.use("/order", orderRouter);
 // router.use("/cart", cartRouter);
 
-module.exports = router;
+module.exports = router; // связываем все роутеры

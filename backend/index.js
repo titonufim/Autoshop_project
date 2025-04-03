@@ -4,14 +4,14 @@ const express = require("express");
 const sequelize = require("./config/db"); // импорт из db
 const models = require("./models/models"); // Просто импортируем, чтобы загрузить модели
 const cors = require("cors"); // для отправления запросов с браузера
-const router = require("./routes/index");
+const router = require("./routes/index"); // импорт роутеров  маршрутами
 
 const PORT = process.env.PORT; // получаем порт из переменных окружения
 
 const app = express(); // создаем объект
 app.use(express.json()); // для парсинга json формата
 app.use(cors());
-app.use("/api", router); // url по которому роутер должен обрабатываться
+app.use("/api", router); // пример url по которому роутер должен обрабатываться
 
 //для проверки
 // app.get("/", (req, res) => {
