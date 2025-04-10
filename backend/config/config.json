@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "titonufim",
-    "password": "password",
+    "username": "postgres",
+    "password": "ps5694rus56",
     "database": "autoparts_shop",
     "host": "localhost",
     "port": 5432,

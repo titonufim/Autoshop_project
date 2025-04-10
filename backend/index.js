@@ -5,18 +5,21 @@ const sequelize = require("./config/db"); // импорт из db
 const models = require("./models/models"); // Просто импортируем, чтобы загрузить модели
 const cors = require("cors"); // для отправления запросов с браузера
 const router = require("./routes/index"); // импорт роутеров  маршрутами
+const fileUpload = require("express-fileupload");
+const path = require("path");
+const errorHandler = require("./middleware/ErrorHandlingMiddleware");
 
 const PORT = process.env.PORT; // получаем порт из переменных окружения
 
 const app = express(); // создаем объект
 app.use(express.json()); // для парсинга json формата
+app.use(fileUpload({})); // в функцию передаем пустой обьект с опциями
+app.use(express.static(path.resolve(__dirname, "static"))); // явно указываем, что файлы из static исп как статику
 app.use(cors());
 app.use("/api", router); // пример url по которому роутер должен обрабатываться
 
-//для проверки
-// app.get("/", (req, res) => {
-//   res.status(200).json({ message: "Работа get метода" }); // status code клиент в зависимости от ситуации говорит как произошел запрос 200 - запрос произошел без ошибок
-// }); // маршрутизация, первый get метод 1 параметр - URL
+app.use(errorHandler); // Обработка ошибок, данный Middleware идет в самом конце
+
 // // про маршрутизацию express тут: https://expressjs.com/ru/guide/routing.html
 
 // функция для подключения к базе данных
