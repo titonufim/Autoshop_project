@@ -7,7 +7,6 @@ const User = sequelize.define("User", {
   name: { type: DataTypes.STRING, allowNull: false },
   email: { type: DataTypes.STRING, allowNull: false, unique: true },
   password_hash: { type: DataTypes.STRING, allowNull: false },
-  phone_number: { type: DataTypes.STRING },
   role: { type: DataTypes.ENUM("client", "admin"), allowNull: false },
 });
 
@@ -15,5 +14,8 @@ const User = sequelize.define("User", {
 User.beforeCreate(async (user) => {
   user.password_hash = await bcrypt.hash(user.password_hash, 10);
 });
+
+// Один пользователь может иметь много заказов
+// Один пользователь может иметь одну корзину
 
 module.exports = User;
