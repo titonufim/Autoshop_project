@@ -5,7 +5,7 @@ class CategoryController {
   // Создание категории (админ) ТЕСТОВОЕ НЕ ДЛЯ АДМИНА
   async create(req, res) {
     const { category_name } = req.body;
-    const category = await Category.create({ category_id, category_name });
+    const category = await Category.create({ category_name });
     return res.json(category);
   }
 
@@ -31,9 +31,6 @@ class CategoryController {
     }
   }
 
-  // // Обновление категории (админ)
-  // async update(req, res) {}
-
   // // Удаление категории (админ)
   async delete(req, res) {
     try {
@@ -50,6 +47,9 @@ class CategoryController {
       return next(ApiError.internal("Ошибка при удалении категории"));
     }
   }
+
+  // // Обновление категории (админ)
+  // async update(req, res) {}
 }
 
 module.exports = new CategoryController();

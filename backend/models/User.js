@@ -7,12 +7,12 @@ const User = sequelize.define("User", {
   name: { type: DataTypes.STRING, allowNull: false },
   email: { type: DataTypes.STRING, allowNull: false, unique: true },
   password_hash: { type: DataTypes.STRING, allowNull: false },
-  role: { type: DataTypes.ENUM("client", "admin"), allowNull: false },
+  role: { type: DataTypes.ENUM("client", "admin"), allowNull: false, defaultValue: "client" },
 });
 
 // Хеширование пароля перед сохранением
 User.beforeCreate(async (user) => {
-  user.password_hash = await bcrypt.hash(user.password_hash, 10);
+  user.password_hash = await bcrypt.hash(user.password_hash, 5);
 });
 
 // Один пользователь может иметь много заказов

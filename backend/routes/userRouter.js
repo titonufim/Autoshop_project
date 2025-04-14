@@ -1,10 +1,11 @@
 const Router = require("express");
 const router = new Router(); // получаем обьект
 const userController = require("../controllers/userController"); // импорт контроллера
+const authMiddleware = require("../middleware/authMiddleware");
 
 router.post("/registration", userController.registration); // для регистрации
 router.post("/login", userController.login); // для авторизации
-router.get("/auth", userController.check_auth);
+router.get("/auth", authMiddleware, userController.check_auth);
 
 // !!!ДОПОЛНИТЬ!!!!  ТАКЖЕ ДЛЯ ДРУГИХ
 

@@ -1,8 +1,9 @@
 const Router = require("express");
 const router = new Router();
 const CategoryController = require("../controllers/categoryController");
+const checkRole = require("../middleware/checkRoleMiddleware");
 
-router.post("/", CategoryController.create);
+router.post("/", checkRole("admin"), CategoryController.create);
 router.get("/", CategoryController.getAll);
 router.get("/:id", CategoryController.getOne);
 
