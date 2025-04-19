@@ -1,8 +1,8 @@
 require("dotenv").config(); // для считывания файла .env
 
 const express = require("express");
-const sequelize = require("./config/db"); // импорт из db
-const models = require("./models/models"); // Просто импортируем, чтобы загрузить модели
+const sequelize = require("./config/db");
+const models = require("./models/models");
 const cors = require("cors"); // для отправления запросов с браузера
 const router = require("./routes/index"); // импорт роутеров  маршрутами
 const fileUpload = require("express-fileupload");
@@ -16,15 +16,14 @@ app.use(express.json()); // для парсинга json формата
 app.use(fileUpload({})); // в функцию передаем пустой обьект с опциями
 app.use(express.static(path.resolve(__dirname, "static"))); // явно указываем, что файлы из static исп как статику
 app.use(cors());
-app.use("/api", router); // пример url по которому роутер должен обрабатываться
+app.use("/api", router);
 
-app.use(errorHandler); // Обработка ошибок, данный Middleware идет в самом конце
+app.use(errorHandler); // данный Middleware всегда идет в самом конце
 
 // // про маршрутизацию express тут: https://expressjs.com/ru/guide/routing.html
 
 // функция для подключения к базе данных
 const start = async () => {
-  // все операции над бд асинхронны
   try {
     await sequelize.authenticate(); // функция обьекта для подключения к БД
     await sequelize.sync(); // сверяет состояние бд со схемой данных

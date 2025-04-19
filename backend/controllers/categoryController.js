@@ -3,10 +3,14 @@ const ApiError = require("../error/APIError");
 
 class CategoryController {
   // Создание категории (админ) ТЕСТОВОЕ НЕ ДЛЯ АДМИНА
-  async create(req, res) {
-    const { category_name } = req.body;
-    const category = await Category.create({ category_name });
-    return res.json(category);
+  async create(req, res, next) {
+    try {
+      const { category_name } = req.body;
+      const category = await Category.create({ category_name });
+      return res.json(category);
+    } catch (error) {
+      return next(ApiError.badRequest("Ошибка при создании категории"));
+    }
   }
 
   // // Получение всех категорий
@@ -32,7 +36,7 @@ class CategoryController {
   }
 
   // // Удаление категории (админ)
-  async delete(req, res) {
+  async delete(req, res, next) {
     try {
       const { id } = req.params;
       const category = await Category.findByPk(id);
@@ -42,16 +46,31 @@ class CategoryController {
       }
 
       await category.destroy();
-      return res.json({ message: `Категория ${id} успешно удалена` });
+      return res.json({ message: `Категория "${category.category_name}" успешно удалена` });
     } catch (error) {
       return next(ApiError.internal("Ошибка при удалении категории"));
     }
   }
 
-  // // Обновление категории (админ)
-  // async update(req, res) {}
+  // Обновление категории (админ)
+  async update(req, res, next) {
+    try {
+      const { id } = req.params;
+      const { category_name } = req.body;
+      const category = await Category.findByPk(id);
+
+      if (!category) {
+        return next(ApiError.notFound("Данной категории не существует"));
+      }
+
+      category.category_name = category_name;
+
+      await category.save();
+      return res.json(category);
+    } catch (error) {
+      return next(ApiError.badRequest("Не получилось обновить данные о категории"));
+    }
+  }
 }
 
 module.exports = new CategoryController();
-
-//категория хранит id (auto), name

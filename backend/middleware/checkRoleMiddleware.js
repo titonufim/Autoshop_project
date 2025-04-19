@@ -9,7 +9,7 @@ module.exports = function (role) {
       return next();
     }
     try {
-      const token = req.headers.authorization.split(" ")[1]; // из хедера нужно выцепить сам токен, но в хэдер обычно помещают тип токена, затем сам токен, по первому индексу получаем сам токен
+      const token = req.headers.authorization.split(" ")[1]; // из хедера нужно выцепить токен,по первому индексу получаем сам токен
       // токен обычно помещают в headers authorization
       if (!token) {
         return next(ApiError.unauthorized("Пользователь не авторизован!"));

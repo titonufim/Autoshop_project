@@ -1,19 +1,13 @@
 const Router = require("express");
 const router = new Router(); // получаем обьект
-const userController = require("../controllers/userController"); // импорт контроллера
+const userController = require("../controllers/userController");
 const authMiddleware = require("../middleware/authMiddleware");
+const checkRole = require("../middleware/checkRoleMiddleware");
 
-router.post("/registration", userController.registration); // для регистрации
-router.post("/login", userController.login); // для авторизации
+router.post("/registration", userController.registration);
+router.post("/login", userController.login);
 router.get("/auth", authMiddleware, userController.check_auth);
-
-// !!!ДОПОЛНИТЬ!!!!  ТАКЖЕ ДЛЯ ДРУГИХ
-
-//так бы выглядело, если бы мы не использовали контроллеры
-// router.get("/auth", (req, res) => {
-//   res.json({ message: "некоторое тестовое сообщение" });
-// }); // проверка: авторизован или неn будет по jwt токену
-
-//router.delete();
+router.get("/", checkRole("admin"), userController.getAll);
+router.delete("/", authMiddleware, userController.delete);
 
 module.exports = router;

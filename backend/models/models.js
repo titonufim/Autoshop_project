@@ -8,7 +8,7 @@ const Cart = require("./Cart");
 const CartItem = require("./CartItem");
 const OrderItem = require("./OrderItem");
 
-// Здесь вызываются все связи после загрузки моделей, иначе не создается да и так правильнее
+// Здесь обеспечиваются все связи после загрузки моделей, иначе не создается да и так правильнее
 User.hasMany(Order, { foreignKey: "user_id" });
 Order.belongsTo(User, { foreignKey: "user_id" });
 

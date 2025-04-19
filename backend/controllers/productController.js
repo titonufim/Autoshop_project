@@ -2,6 +2,7 @@ const { Product } = require("../models/models");
 const ApiError = require("../error/APIError");
 const uuid = require("uuid");
 const path = require("path");
+const fs = require("fs");
 const APIError = require("../error/APIError");
 
 class ProductController {
@@ -16,7 +17,7 @@ class ProductController {
 
       return res.json(product);
     } catch (error) {
-      next(ApiError.badRequest(error.message));
+      return next(ApiError.badRequest("Ошибка при создании товара"));
     }
   }
 
@@ -34,7 +35,7 @@ class ProductController {
       }
       return res.json(product);
     } catch (error) {
-      next(ApiError.badRequest(error.message));
+      return next(ApiError.badRequest("Ошибка при получении данных о товарах"));
     }
   }
 
@@ -49,15 +50,58 @@ class ProductController {
 
       return res.json(one_product);
     } catch (error) {
-      return next(ApiError.badRequest("error.message"));
+      return next(ApiError.badRequest("Ошибка при получении товара"));
     }
   }
 
-  //   // Обновление товара (админ)
-  //   async update(req, res) {}
+  // Обновление товара (админ)
+  async update(req, res, next) {
+    try {
+      const { id } = req.params;
+      const { name, description, price, stock, category_id } = req.body;
+      const product = await Product.findByPk(id);
 
-  //   // Удаление товара (админ)
-  //   async delete(req, res) {}
+      if (!product) {
+        return next(ApiError.notFound("Такого товара не существует"));
+      }
+
+      if (name) product.name = name;
+      if (description) product.description = description;
+      if (price) product.price = parseInt(price);
+      if (stock) product.stock = parseInt(stock);
+      if (category_id) product.category_id = parseInt(category_id);
+
+      await product.save();
+      return res.json(product);
+    } catch (error) {
+      return next(ApiError.badRequest("Не получилось обновить данные о товаре"));
+    }
+  }
+
+  // Удаление товара (админ)
+  async delete(req, res, next) {
+    try {
+      const { id } = req.params;
+      const product = await Product.findByPk(id);
+
+      if (!product) {
+        return next(ApiError.notFound("Товар не найден"));
+      }
+
+      // Удаляем изображение из папки static, если оно есть
+      if (product.image) {
+        const imagePath = path.resolve(__dirname, "..", "static", product.image);
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+        }
+      }
+
+      await product.destroy();
+      return res.json({ message: "Товар успешно удален" });
+    } catch (error) {
+      return next(ApiError.badRequest("Ошибка при удалении товара"));
+    }
+  }
 }
 
 module.exports = new ProductController();
