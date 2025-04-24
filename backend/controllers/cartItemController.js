@@ -18,9 +18,7 @@ class CartItemController {
       if (!product) return next(ApiError.notFound("Продукт не найден"));
 
       if (product.stock < desired_quantity) {
-        return next(
-          ApiError.badRequest(`Недостаточно товара в наличии. На складе имеется ${product.stock} ед.товара.`)
-        );
+        return next(ApiError.internal(`Недостаточно товара в наличии. На складе имеется ${product.stock} ед.товара.`));
       }
 
       // имеющийся в корзине товар
@@ -33,7 +31,7 @@ class CartItemController {
 
         if (new_quantity > product.stock) {
           return next(
-            ApiError.badRequest(`Недостаточно товара в наличии. На складе имеется ${product.stock} ед.товара.`)
+            ApiError.internal(`Недостаточно товара в наличии. На складе имеется ${product.stock} ед.товара.`)
           );
         }
 

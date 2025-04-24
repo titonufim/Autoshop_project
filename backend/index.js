@@ -25,7 +25,7 @@ app.use(errorHandler); // данный Middleware всегда идет в са�
 // функция для подключения к базе данных
 const start = async () => {
   try {
-    await sequelize.authenticate(); // функция обьекта для подключения к БД
+    await sequelize.authenticate();
     await sequelize.sync(); // сверяет состояние бд со схемой данных
     app.listen(PORT, () => console.log(`Server started on port: ${PORT}`)); // указываем какой порт должен прослушивать наш сервер
   } catch (e) {

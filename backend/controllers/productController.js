@@ -9,7 +9,7 @@ class ProductController {
   async create(req, res, next) {
     try {
       const { name, description, price, stock, category_id } = req.body; // получаем данные из тела запроса
-      const { image } = req.files; //у каждого товара должно быть его изображение, для этого нужно установить пакет
+      const { image } = req.files;
       let fileName = uuid.v4() + ".jpg"; // генерация рандомного id с исп пакета uuid
       image.mv(path.resolve(__dirname, "..", "static", fileName)); //для перемещения файла в папку static. Можно было указать путь самостоятельно, но воспользуемся path
 
@@ -17,7 +17,7 @@ class ProductController {
 
       return res.json(product);
     } catch (error) {
-      return next(ApiError.badRequest("Ошибка при создании товара"));
+      return next(ApiError.internal("Ошибка при создании товара"));
     }
   }
 
@@ -35,7 +35,7 @@ class ProductController {
       }
       return res.json(product);
     } catch (error) {
-      return next(ApiError.badRequest("Ошибка при получении данных о товарах"));
+      return next(ApiError.internal("Ошибка при получении данных о товарах"));
     }
   }
 
@@ -50,7 +50,7 @@ class ProductController {
 
       return res.json(one_product);
     } catch (error) {
-      return next(ApiError.badRequest("Ошибка при получении товара"));
+      return next(ApiError.internal("Ошибка при получении товара"));
     }
   }
 
@@ -74,7 +74,7 @@ class ProductController {
       await product.save();
       return res.json(product);
     } catch (error) {
-      return next(ApiError.badRequest("Не получилось обновить данные о товаре"));
+      return next(ApiError.internal("Не получилось обновить данные о товаре"));
     }
   }
 
@@ -99,7 +99,7 @@ class ProductController {
       await product.destroy();
       return res.json({ message: "Товар успешно удален" });
     } catch (error) {
-      return next(ApiError.badRequest("Ошибка при удалении товара"));
+      return next(ApiError.internal("Ошибка при удалении товара"));
     }
   }
 }

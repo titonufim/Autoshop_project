@@ -1,7 +1,6 @@
 const Router = require("express");
 const router = new Router();
 
-// импортируем роутеры
 const userRouter = require("./userRouter");
 const productRouter = require("./productRouter");
 const categoryRouter = require("./categoryRouter");

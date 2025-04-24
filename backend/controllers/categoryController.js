@@ -9,7 +9,7 @@ class CategoryController {
       const category = await Category.create({ category_name });
       return res.json(category);
     } catch (error) {
-      return next(ApiError.badRequest("Ошибка при создании категории"));
+      return next(ApiError.internal("Ошибка при создании категории"));
     }
   }
 
@@ -68,7 +68,7 @@ class CategoryController {
       await category.save();
       return res.json(category);
     } catch (error) {
-      return next(ApiError.badRequest("Не получилось обновить данные о категории"));
+      return next(ApiError.internal("Не получилось обновить данные о категории"));
     }
   }
 }

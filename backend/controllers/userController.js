@@ -20,7 +20,7 @@ class UserController {
       const candidate = await User.findOne({ where: { email } });
 
       if (candidate) {
-        return next(ApiError.badRequest("Пользователь с данным email уже существует!"));
+        return next(ApiError.conflict("Пользователь с данным email уже существует!"));
       }
 
       const user = await User.create({ name, email, password_hash, role });
@@ -28,7 +28,7 @@ class UserController {
       const token = GenerateToken(user.id, user.name, user.email, user.role);
       return res.json({ token });
     } catch (error) {
-      return next(ApiError.badRequest("Ошибка при регистрации"));
+      return next(ApiError.internal("Ошибка при регистрации"));
     }
   }
 
@@ -41,13 +41,13 @@ class UserController {
       }
       let comparePassword = bcrypt.compareSync(password_hash, user.password_hash);
       if (!comparePassword) {
-        return next(ApiError.badRequest("Неверный пароль!"));
+        return next(ApiError.conflict("Неверный пароль!"));
       }
       const token = GenerateToken(user.id, user.name, user.email, user.role); // генерируем токен
 
       return res.json({ token });
     } catch (error) {
-      return next(ApiError.badRequest("Ошибка при входе в аккаунт"));
+      return next(ApiError.internal("Ошибка при входе в аккаунт"));
     }
   }
 
@@ -56,11 +56,10 @@ class UserController {
       const all_users = await User.findAll();
       return res.json(all_users);
     } catch (error) {
-      return next(ApiError.badRequest("Непредвиденная ошибка"));
+      return next(ApiError.internal("Непредвиденная ошибка"));
     }
   }
 
-  // Проверка авторизации она генерирует новый токен и отправляет его на клиент
   async check_auth(req, res, next) {
     //return res.json({ message: "все гуд" });
     const token = GenerateToken(req.user.id, req.user.name, req.user.email, req.user.role);
@@ -91,7 +90,7 @@ class UserController {
       return res.json({ message: "Аккаунт успешно удален" });
     } catch (error) {
       console.error(error);
-      return next(ApiError.badRequest("Ошибка при удалении пользователя"));
+      return next(ApiError.internal("Ошибка при удалении пользователя"));
     }
   }
 }
