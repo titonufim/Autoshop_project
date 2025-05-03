@@ -50,7 +50,17 @@ class OrderController {
         await item.destroy(); // очистка корзины
       }
 
-      return res.json({ message: `Заказ №${order.id} успешно создан` });
+      const createdOrder = await Order.findOne({
+        where: { id: order.id },
+        include: [
+          { model: OrderItem, include: [Product] },
+          { model: User, attributes: ["id", "email"] },
+        ],
+      });
+
+      return res.json(createdOrder); // Теперь возвращаем сам заказ
+
+      //return res.json({ message: `Заказ №${order.id} успешно создан` });
     } catch (error) {
       return next(ApiError.internal("Ошибка при создании заказа"));
     }
@@ -125,6 +135,21 @@ class OrderController {
       return next(ApiError.internal("Ошибка при обновлении статуса"));
     }
   }
+
+  // // Удаление всех заказов и orderItems
+  // async deleteAllOrders(req, res, next) {
+  //   try {
+  //     // Удаляем все элементы заказов (OrderItems)
+  //     await OrderItem.destroy({ where: {} });
+
+  //     // Удаляем все заказы
+  //     await Order.destroy({ where: {} });
+
+  //     return res.json({ message: "Все заказы и элементы заказов успешно удалены" });
+  //   } catch (error) {
+  //     return next(ApiError.internal("Ошибка при удалении всех заказов"));
+  //   }
+  // }
 }
 
 module.exports = new OrderController();

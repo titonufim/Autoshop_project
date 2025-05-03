@@ -5,7 +5,6 @@ import Cart from "./pages/cart";
 import Order from "./pages/order";
 import Shop from "./pages/shop";
 import Auth from "./pages/auth";
-import Device from "./pages/devicePage";
 //import NotFound from "./pages/notFound";
 
 import {
@@ -15,7 +14,6 @@ import {
   SHOP_ROUTER,
   LOGIN_ROUTER,
   REGISTRATION_ROUTER,
-  DEVICE_ROUTER,
 } from "./utils/constants";
 
 // список маршрутов только для авторизованнных
@@ -23,6 +21,7 @@ export const authRoutes = [
   {
     path: ADMIN_ROUTER, // путь к компоненту, url
     Component: Admin, // сам компонент
+    role: "admin", // Только для админа
   },
   {
     path: CART_ROUTER,
@@ -48,10 +47,10 @@ export const publicRoutes = [
     path: REGISTRATION_ROUTER,
     Component: Auth,
   },
-  {
-    path: DEVICE_ROUTER + "/:id",
-    Component: Device,
-  },
+  // {
+  //   path: DEVICE_ROUTER + "/:id",
+  //   Component: Device,
+  // },
   // {
   //   path: NOT_FOUND_ROUTER,
   //   Component: NotFound,

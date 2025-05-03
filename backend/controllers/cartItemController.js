@@ -8,7 +8,6 @@ class CartItemController {
       const userId = req.user.id;
       const { product_id, quantity } = req.body;
 
-      // желаемое количество
       const desired_quantity = quantity ?? 1;
 
       const cart = await Cart.findOne({ where: { user_id: userId } });
@@ -21,7 +20,6 @@ class CartItemController {
         return next(ApiError.internal(`Недостаточно товара в наличии. На складе имеется ${product.stock} ед.товара.`));
       }
 
-      // имеющийся в корзине товар
       const existing_item = await CartItem.findOne({
         where: { cart_id: cart.id, product_id },
       });
@@ -45,7 +43,13 @@ class CartItemController {
         });
       }
 
-      return res.json({ message: "Товар добавлен в корзину" });
+      // Возвращаем только нужные поля
+      const updatedItems = await CartItem.findAll({
+        where: { cart_id: cart.id },
+        attributes: ["id", "cart_id", "product_id", "quantity"],
+      });
+
+      return res.json(updatedItems);
     } catch (error) {
       return next(ApiError.internal("Ошибка при добавлении товара в корзину"));
     }

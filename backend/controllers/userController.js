@@ -64,7 +64,7 @@ class UserController {
     //return res.json({ message: "все гуд" });
     const token = GenerateToken(req.user.id, req.user.name, req.user.email, req.user.role);
     // return res.json({ message: "Пользователь авторизован" });
-    return res.json(token);
+    return res.json({ token });
   }
 
   async delete(req, res, next) {

@@ -17,4 +17,6 @@ router.get("/admin/all", checkRole("admin"), orderController.getAllOrders);
 // // Обновить статус заказа ("admin")
 router.put("/:order_id", checkRole("admin"), orderController.updateStatus);
 
+//router.delete("/", checkRole("admin"), orderController.deleteAllOrders);
+
 module.exports = router;
