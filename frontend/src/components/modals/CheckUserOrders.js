@@ -58,7 +58,7 @@ const UserOrdersModal = ({ show, onHide }) => {
       <Modal.Body>
         {statusMessage && <Alert variant="success">{statusMessage}</Alert>}
         {toJS(order.order).map((ord) => {
-          const user = order.getUserById(ord.user_id); // 👈 получаем пользователя по ID
+          const user = order.getUserById(ord.user_id);
           return (
             <Card className="mb-4" key={ord.id}>
               <Card.Header>

@@ -110,7 +110,7 @@ const Cart = observer(() => {
   //     order.setOrderItems(data.OrderItems || []);
 
   //     //alert(`Заказ №${data.id} успешно создан!`);
-  //     console.log(order.getOrderItemsByOrderId(data.id)); // data.id — ID созданного заказа
+  //     console.log(order.getOrderItemsByOrderId(data.id));
   //   } catch (e) {
   //     alert(e.response?.data?.message || "Ошибка при создании заказа");
   //   }
@@ -131,7 +131,7 @@ const Cart = observer(() => {
         },
       ]);
 
-      // Сохраняем все товары, которые входят в заказ
+      // сохраняем все товары, которые входят в заказ
       order.setOrderItems(data.OrderItems || []);
     } catch (e) {
       alert(e.response?.data?.message || "Ошибка при создании заказа");
