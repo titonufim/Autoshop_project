@@ -28,7 +28,7 @@ services:
       dockerfile: frontend/Dockerfile
     container_name: frontend
     ports:
-      - "3000:3000"
+      - "3000:3004"
     networks:
       - app_network
     depends_on:
